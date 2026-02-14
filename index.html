@@ -1,0 +1,282 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>For Olivia - My Lovey</title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Nunito:wght@300;400;700&display=swap');
+
+            :root {
+                --primary-red: #d32f2f;
+                --soft-pink: #ffeef2;
+                --tulip-pink: #ff8fa3;
+                --text-color: #4a4a4a;
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            body {
+                background: linear-gradient(135deg, #fff0f3 0%, #ffe6e9 100%);
+                font-family: 'Nunito', sans-serif;
+                color: var(--text-color);
+                min-height: 100vh;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow-x: hidden;
+                position: relative;
+            }
+
+            /* Floating Hearts Background */
+            .bg-hearts {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 0;
+                overflow: hidden;
+            }
+
+            .bg-heart {
+                position: absolute;
+                color: rgba(255, 143, 163, 0.4);
+                animation: floatUp linear forwards; /* Fixed animation name */
+                bottom: -50px; /* Start below screen */
+            }
+
+            /* Opening Screen */
+            .intro-screen {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: #fff0f3;
+                z-index: 100;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: opacity 1s ease;
+            }
+
+            .envelope-btn {
+                background: white;
+                padding: 20px 40px;
+                border-radius: 50px;
+                box-shadow: 0 10px 25px rgba(211, 47, 47, 0.15);
+                border: 2px solid var(--tulip-pink);
+                font-family: 'Dancing Script', cursive;
+                font-size: 2rem;
+                color: var(--primary-red);
+                cursor: pointer;
+                transition: transform 0.3s ease;
+                animation: pulse 2s infinite;
+            }
+
+            .envelope-btn:hover {
+                transform: scale(1.05);
+            }
+
+            /* Main Card */
+            .card {
+                background: rgba(255, 255, 255, 0.95);
+                width: 90%;
+                max-width: 600px;
+                padding: 40px;
+                border-radius: 20px;
+                box-shadow: 0 15px 35px rgba(168, 69, 69, 0.1);
+                position: relative;
+                z-index: 10;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: all 1s ease;
+                display: none;
+                border: 1px solid white;
+            }
+
+            .card.visible {
+                opacity: 1;
+                transform: translateY(0);
+                display: block;
+            }
+
+            h1 {
+                font-family: 'Dancing Script', cursive;
+                color: var(--primary-red);
+                font-size: 2.5rem;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            .greeting {
+                font-weight: 700;
+                color: var(--tulip-pink);
+                text-align: center;
+                margin-bottom: 10px;
+                font-size: 1rem;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+            }
+
+            .letter-body {
+                line-height: 1.8;
+                font-size: 1.05rem;
+                text-align: justify;
+                margin-bottom: 30px;
+            }
+
+            .letter-body p {
+                margin-bottom: 15px;
+            }
+
+            .highlight {
+                color: var(--primary-red);
+                font-weight: 700;
+            }
+
+            /* Tulip Section */
+            .tulip-section {
+                background: #fff5f7;
+                border-left: 4px solid var(--tulip-pink);
+                padding: 20px;
+                margin: 30px 0;
+                border-radius: 0 10px 10px 0;
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .tulip-icon {
+                font-size: 2.5rem;
+                line-height: 1;
+            }
+
+            .tulip-text {
+                font-style: italic;
+                color: #666;
+                font-size: 0.9rem;
+            }
+
+            .signature {
+                font-family: 'Dancing Script', cursive;
+                text-align: right;
+                font-size: 1.8rem;
+                color: var(--primary-red);
+                margin-top: 40px;
+            }
+
+            .signature span {
+                display: block;
+                font-size: 0.9rem;
+                font-family: 'Nunito', sans-serif;
+                color: #888;
+                margin-top: 5px;
+            }
+
+            /* Animations */
+            @keyframes pulse {
+                0% { box-shadow: 0 0 0 0 rgba(255, 143, 163, 0.4); }
+                70% { box-shadow: 0 0 0 15px rgba(255, 143, 163, 0); }
+                100% { box-shadow: 0 0 0 0 rgba(255, 143, 163, 0); }
+            }
+
+            @keyframes floatUp {
+                0% { transform: translateY(0) scale(0.5); opacity: 0; }
+                20% { opacity: 0.6; }
+                100% { transform: translateY(-110vh) scale(1.2); opacity: 0; }
+            }
+
+            @media (max-width: 600px) {
+                .card {
+                    padding: 25px;
+                    width: 95%;
+                }
+                h1 { font-size: 2rem; }
+                .letter-body { text-align: left; }
+            }
+        </style>
+    </head>
+    <body>
+
+        <div class="bg-hearts" id="heartsContainer"></div>
+
+        <div class="intro-screen" id="intro">
+            <button class="envelope-btn" onclick="openLetter()">
+                For My Lovey ❤️
+                <div style="font-size: 0.9rem; font-family: 'Nunito'; margin-top:5px; color: #d32f2f; opacity: 0.8; font-weight: normal;">(Click to Open)</div>
+            </button>
+        </div>
+
+        <div class="card" id="letter">
+            <div class="greeting">Happy Valentine's Day</div>
+            <h1>My Dearest Olivia</h1>
+
+            <div class="letter-body">
+                <p>Happy Valentine's Day, <span class="highlight">Lovey</span>.</p>
+
+                <p>Happy Valentine's day Lovey—a day for us to celebrate the love that exists in us. For us to remember that love has many beautiful forms and appreciate the love we give and the love we receive. I'm here to remind you that all of your efforts are not in vain to love your family, friends and even me. You are well appreciated and your efforts are recognized. Olivia my best friend noon, mahal ko ngayon. I know you deeply on how you talk, move and how you love. You have a pure soul and heart and that's why many good people surround you and I'm one of them. I'm a witness on how great, awesome and thoughtful you are, that's why I'm deeply in love with you. Loving you was my best decision of all even though we've known each other for years but this time is the bestest moment for me. Like I said before, my willingness to be with you turns into willingness to love you and that makes me love you deeply each day goes by. You make my heart feel so full every day that I'm craving to be with you more and more. Thank you for giving me that chance to prove to you that I really love you and I cherish your whole existence the more you know. I know that your heart is still suffering from the challenges that you had before but please still accept the love that cares for you, the love that cherishes you, the love that is willing to go beyond what love really is and please accept my love. As this day to end, Please let this tulip necklace symbolize the love that we have in this valentines. I love you so much my baby, my lovey, my lovelove/luvluv and my mahal ko. Mahal kita soaper duper muchhhhh.....</p>
+
+                <p>You are my lovey, my baby, and the person who makes my world brighter just by being in it. Thank you for your patience, your kindness, and for simply being you.</p>
+            </div>
+
+            <div class="tulip-section">
+                <div class="tulip-icon">🌷</div>
+                <div class="tulip-text">
+                    "Like a tulip, your beauty and grace bloom in the most wonderful ways, bringing color to my life every single day."
+                </div>
+            </div>
+
+            <div class="signature">
+                Forever Yours,
+                <br>
+                Your Bulak
+                <span>(Wiji)</span>
+            </div>
+        </div>
+
+        <script>
+            function openLetter() {
+                const intro = document.getElementById('intro');
+                const letter = document.getElementById('letter');
+                
+                intro.style.opacity = '0';
+                
+                setTimeout(() => {
+                    intro.style.display = 'none';
+                    
+                    letter.style.display = 'block';
+                    setTimeout(() => {
+                        letter.classList.add('visible');
+                    }, 50);
+                    
+                }, 1000);
+            }
+
+            function createHeart() {
+                const heart = document.createElement('div');
+                heart.classList.add('bg-heart');
+                heart.innerHTML = '❤';
+                
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = Math.random() * 3 + 4 + 's'; // 4-7 seconds
+                heart.style.fontSize = Math.random() * 20 + 10 + 'px'; // 10-30px
+                
+                document.getElementById('heartsContainer').appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 7000);
+            }
+
+            setInterval(createHeart, 300);
+        </script>
+    </body>
+    </html>
